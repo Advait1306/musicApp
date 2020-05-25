@@ -10,7 +10,8 @@ class Song (
     @PrimaryKey(autoGenerate = true)
 
     @ColumnInfo(name = "songName")
-    private  var songName : String,
+    private
+    var songName : String,
 
     @ColumnInfo(name = "albumName")
     private var albumName: String,
