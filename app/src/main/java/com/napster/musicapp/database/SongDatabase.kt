@@ -10,9 +10,6 @@ import androidx.room.RoomDatabase
 abstract class SongDatabase : RoomDatabase() {
 
     abstract fun songDAO(): SongDAO
-
-
-
     companion object {
 
         @Volatile
@@ -36,15 +33,4 @@ abstract class SongDatabase : RoomDatabase() {
             }
         }
     }
-}
-
-
-
-
-
-                }
-
-
-
-
 }

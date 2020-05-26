@@ -8,20 +8,40 @@ import androidx.room.PrimaryKey
 class Song (
 
     @PrimaryKey(autoGenerate = true)
+    private var id: Int,
 
     @ColumnInfo(name = "songName")
-    private
-    var songName : String,
+    private var songName : String,
 
     @ColumnInfo(name = "albumName")
     private var albumName: String,
 
     @ColumnInfo(name = "artist")
-    private  var artist : String,
+    private var artist : String,
 
     @ColumnInfo(name = "songDuration")
-    private  var songDuration : Int // in seconds
+    private var songDuration : Int // in seconds
     )
 {
+
+    fun getId(): Int{
+        return id
+    }
+
+    fun getSongName(): String{
+        return songName
+    }
+
+    fun getAlbumName(): String{
+        return albumName
+    }
+
+    fun getArtist(): String{
+        return artist
+    }
+
+    fun getSongDuration(): Int{
+        return songDuration
+    }
 
 }

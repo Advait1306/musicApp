@@ -25,7 +25,6 @@ class MainActivity : AppCompatActivity()  {
             mediaPlayer!!.start()
         }
 
-
         requestPermissions(arrayOf(re),12345)
         val songListViewModel = SongListViewModel(applicationContext)
 
