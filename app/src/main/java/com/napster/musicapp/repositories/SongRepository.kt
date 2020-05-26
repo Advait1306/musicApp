@@ -46,7 +46,7 @@ class SongRepository(context: Context) {
                     song.location = ContentUris.withAppendedId(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, it.getLong(songId))
                     song.albumArt = ContentUris.withAppendedId(albumArtUri, it.getLong(audioAlbumId))
                     songList.add(song)
-                    songListLiveData.value!!.add(song)
+                    songListLiveData.value = songList
                 }
 
             }

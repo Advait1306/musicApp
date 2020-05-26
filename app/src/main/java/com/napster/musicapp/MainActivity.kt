@@ -21,13 +21,14 @@ class MainActivity : AppCompatActivity()  {
         play.setOnClickListener {
             if (mediaPlayer == null){
                 mediaPlayer = MediaPlayer.create(applicationContext, R.raw.song)
-
             }
             mediaPlayer!!.start()
         }
 
+
         requestPermissions(arrayOf(re),12345)
         val songListViewModel = SongListViewModel(applicationContext)
+
         songListViewModel.getSongList().observe(this, Observer {songs ->
             TODO()
         })
