@@ -5,11 +5,13 @@ import android.media.MediaPlayer
 import androidx.appcompat.app.AppCompatActivity
 import android.Manifest.permission.READ_EXTERNAL_STORAGE as re
 import android.os.Bundle
-import androidx.lifecycle.Observer
+import android.util.Log
 import kotlinx.android.synthetic.main.activity_main.*
 import com.napster.musicapp.viewModels.SongListViewModel
 
 class MainActivity : AppCompatActivity() {
+
+    private val TAG = "MAIN ACTIVITY"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -24,7 +26,7 @@ class MainActivity : AppCompatActivity() {
             mediaPlayer!!.start()
         }
         if (checkSelfPermission(re) == PackageManager.PERMISSION_GRANTED) {
-           songsGet()
+            getSongs()
         } else {
             requestPermissions(arrayOf(re), 12345)
         }
@@ -36,22 +38,17 @@ class MainActivity : AppCompatActivity() {
         grantResults: IntArray
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        if((grantResults.isNotEmpty() &&
-                    grantResults[0] == PackageManager.PERMISSION_GRANTED)){
-            songsGet()
-        }
-        else{
-            requestPermissions(arrayOf(re),12345)
+        if ((grantResults.isNotEmpty() &&
+                    grantResults[0] == PackageManager.PERMISSION_GRANTED)
+        ) {
+            getSongs()
+        } else {
+            Log.d(TAG, "Permission denied")
         }
     }
 
-    private fun songsGet() {
-
-        requestPermissions(arrayOf(re),12345)
+    private fun getSongs() {
         val songListViewModel = SongListViewModel(applicationContext)
+    }
 
-        songListViewModel.getSongList()
-/*.observe(this, Observer { songs ->
-            TODO()
-        }) */   }
 }
