@@ -2,20 +2,20 @@ package com.napster.musicapp.repositories
 
 import android.content.ContentUris
 import android.content.Context
-import android.database.Cursor
 import android.net.Uri
 import android.provider.MediaStore
 import android.util.Log
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 
 
-
-class SongRepository {
-    var songList: ArrayList<Song> = arrayListOf()
+class SongRepository(context: Context) {
+    private var songList: ArrayList<Song> = arrayListOf()
+    private var songListLiveData = MutableLiveData<ArrayList<Song>>()
     private val albumArtUri: Uri = Uri.parse("content://media/external/audio/albumart")
-
     private val TAG = "SONG REPOSITORY"
 
-    fun getPlayList(context: Context){
+    init {
         try {
             val metaData: Array<String> = arrayOf(
                 MediaStore.Audio.Media._ID,
@@ -27,41 +27,42 @@ class SongRepository {
             )
 
 
-            val audioCursor: Cursor? = context.contentResolver.query(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, metaData, "", null, "")
+            context.contentResolver.query(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, metaData, "", null, "").use{
 
-            if (audioCursor != null) {
-                if (audioCursor.moveToFirst()) {
-                    do {
-                        val audioTitle = audioCursor.getColumnIndexOrThrow(MediaStore.Audio.Media.TITLE)
-                        val audioArtist = audioCursor.getColumnIndexOrThrow(MediaStore.Audio.Media.ARTIST)
-                        val audioDuration = audioCursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DURATION)
-                        val audioAlbum = audioCursor.getColumnIndexOrThrow(MediaStore.Audio.Media.ALBUM)
-                        val audioAlbumId = audioCursor.getColumnIndexOrThrow(MediaStore.Audio.Media.ALBUM_ID)
-                        val songId = audioCursor.getColumnIndexOrThrow(MediaStore.Audio.Media._ID)
+                val audioTitle = it!!.getColumnIndexOrThrow(MediaStore.Audio.Media.TITLE)
+                val audioArtist = it.getColumnIndexOrThrow(MediaStore.Audio.Media.ARTIST)
+                val audioDuration = it.getColumnIndexOrThrow(MediaStore.Audio.Media.DURATION)
+                val audioAlbum = it.getColumnIndexOrThrow(MediaStore.Audio.Media.ALBUM)
+                val audioAlbumId = it.getColumnIndexOrThrow(MediaStore.Audio.Media.ALBUM_ID)
+                val songId = it.getColumnIndexOrThrow(MediaStore.Audio.Media._ID)
 
-                        val song = Song()
-
-                        song.title = audioCursor.getString(audioTitle)
-                        song.duration = (audioCursor.getString(audioDuration))
-                        song.artist = audioCursor.getString(audioArtist)
-                        song.album = (audioCursor.getString(audioAlbum))
-                        song.id = audioCursor.getLong(songId)
-                        song.albumArt = (ContentUris.withAppendedId(albumArtUri, audioCursor.getLong(audioAlbumId))).toString()
-
-                        songList.add(song)
-                    } while (audioCursor.moveToNext())
+                while (it.moveToNext()){
+                    val song = Song()
+                    song.title = it.getString(audioTitle)
+                    song.duration = it.getString(audioDuration)
+                    song.artist = it.getString(audioArtist)
+                    song.album = it.getString(audioAlbum)
+                    song.id = it.getLong(songId)
+                    song.location = ContentUris.withAppendedId(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, it.getLong(songId))
+                    song.albumArt = ContentUris.withAppendedId(albumArtUri, it.getLong(audioAlbumId))
+                    songList.add(song)
+                    songListLiveData.value!!.add(song)
                 }
+
             }
-            audioCursor?.close()
 
         } catch (e: Exception) {
+            Log.e(TAG, "error")
             e.printStackTrace()
         }
 
         for(song in songList){
-            Log.d(TAG, "${song.title}")
+            Log.d(TAG, "${song.location} ${song.title}")
         }
     }
 
-}
+    fun getSongsList(): LiveData<ArrayList<Song>> {
+        return songListLiveData
+    }
 
+}

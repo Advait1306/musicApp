@@ -1,6 +1,6 @@
 package com.napster.musicapp.repositories
 
-import android.os.Parcel
+import android.net.Uri
 
 
 class Song() {
@@ -8,7 +8,8 @@ class Song() {
     var album: String? = null
     var artist: String? = null
     var fileUri: String? = null
-    var albumArt: String? = null
+    var albumArt: Uri? = null
     var duration: String? = null
+    var location: Uri? = null
     var id: Long = 0
 }
