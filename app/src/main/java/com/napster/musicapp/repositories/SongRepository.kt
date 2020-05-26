@@ -7,7 +7,7 @@ import android.net.Uri
 import android.provider.MediaStore
 import android.util.Log
 
-class Populate {
+class SongRepository {
     //Get audio  files and details from device
     fun audioRet() {
         val proj: Array<String> = arrayOf(
