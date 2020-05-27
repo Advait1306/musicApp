@@ -1,5 +1,6 @@
 package com.napster.musicapp.repositories
 
+import android.app.Application
 import android.content.ContentUris
 import android.content.Context
 import android.net.Uri
@@ -9,13 +10,24 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 
 
-class SongRepository(context: Context) {
+class SongRepository(private val context: Context) {
     private var songList: ArrayList<Song> = arrayListOf()
     private var songListLiveData = MutableLiveData<ArrayList<Song>>()
     private val albumArtUri: Uri = Uri.parse("content://media/external/audio/albumart")
     private val TAG = "SONG REPOSITORY"
 
-    init {
+    companion object{
+        private var instance: SongRepository? = null
+
+        fun getInstance(context: Context): SongRepository{
+            if (instance == null){
+                instance = SongRepository(context)
+            }
+            return instance!!
+        }
+    }
+
+    fun locateAudioFilesOnDevice() {
         try {
             val metaData: Array<String> = arrayOf(
                 MediaStore.Audio.Media._ID,
@@ -25,7 +37,6 @@ class SongRepository(context: Context) {
                 MediaStore.Audio.Media.ALBUM,
                 MediaStore.Audio.Media.ALBUM_ID
             )
-
 
             context.contentResolver.query(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, metaData, "", null, "").use{
 
