@@ -10,29 +10,28 @@ import androidx.activity.viewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.napster.musicapp.adapters.SongRecyclerViewAdapter
+import com.napster.musicapp.fragments.PlayerFragment
+import com.napster.musicapp.viewModels.PlayerViewModel
 import kotlinx.android.synthetic.main.activity_main.*
 import com.napster.musicapp.viewModels.SongListViewModel
 
 class MainActivity : AppCompatActivity() {
 
     private val TAG = "MAIN ACTIVITY"
-    private var mediaPlayer: MediaPlayer? = null
     private val songListViewModel: SongListViewModel by viewModels()
+    private val playerViewModel: PlayerViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        //Should be changed to Pause button
-        play.setOnClickListener {
-            if (mediaPlayer != null) {
-                mediaPlayer!!.release()
-                mediaPlayer = null
-            }
-        }
+        val fragmentManager = supportFragmentManager
+        val fragmentTransaction = fragmentManager.beginTransaction()
+        fragmentTransaction.add(R.id.fragmentHolder, PlayerFragment())
+        fragmentTransaction.commit()
 
         //RecyclerView code
-        val recyclerViewAdapter = SongRecyclerViewAdapter(songListViewModel.getSongList())
+        val recyclerViewAdapter = SongRecyclerViewAdapter(songListViewModel.getSongList(), playerViewModel)
         val recyclerViewLayoutManager = LinearLayoutManager(this )
 
         songRecyclerView.apply{
@@ -52,9 +51,6 @@ class MainActivity : AppCompatActivity() {
         } else {
             requestPermissions(arrayOf(re), 12345)
         }
-
-
-
     }
 
     override fun onRequestPermissionsResult(

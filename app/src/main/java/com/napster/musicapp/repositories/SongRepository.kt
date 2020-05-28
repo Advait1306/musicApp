@@ -67,6 +67,10 @@ class SongRepository(private val context: Context) {
             e.printStackTrace()
         }
 
+        if(songList.size == 0){
+            Log.d(TAG, "No audio files found.")
+        }
+
         for(song in songList){
             Log.d(TAG, "${song.location} ${song.title}")
         }
