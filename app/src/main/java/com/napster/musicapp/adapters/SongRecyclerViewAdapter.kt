@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import androidx.lifecycle.LiveData
 import androidx.recyclerview.widget.RecyclerView
 import com.napster.musicapp.R
+import com.napster.musicapp.repositories.MillitoString
 import com.napster.musicapp.repositories.Song
 import kotlinx.android.synthetic.main.song_list_view.view.*
 
@@ -27,6 +28,9 @@ class SongRecyclerViewAdapter(val songList: LiveData<ArrayList<Song>>) :
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        val ms = MillitoString().milliSecondsToTimer((songList.value!![position].duration)!!.toLong())
         holder.itemView.songName.text = songList.value!![position].title
+        holder.itemView.songDur.text = ms
+        holder.itemView.songArt.text = songList.value!![position].artist
     }
 }
