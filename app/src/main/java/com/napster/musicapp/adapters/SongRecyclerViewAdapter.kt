@@ -6,11 +6,10 @@ import android.view.ViewGroup
 import androidx.lifecycle.LiveData
 import androidx.recyclerview.widget.RecyclerView
 import com.napster.musicapp.R
-import com.napster.musicapp.repositories.MillitoString
 import com.napster.musicapp.repositories.Song
 import kotlinx.android.synthetic.main.song_list_view.view.*
 
-class SongRecyclerViewAdapter(val songList: LiveData<ArrayList<Song>>) :
+class SongRecyclerViewAdapter(private val songList: LiveData<ArrayList<Song>>) :
     RecyclerView.Adapter<SongRecyclerViewAdapter.ViewHolder>() {
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {}
 
@@ -28,9 +27,39 @@ class SongRecyclerViewAdapter(val songList: LiveData<ArrayList<Song>>) :
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val ms = MillitoString().milliSecondsToTimer((songList.value!![position].duration)!!.toLong())
+        val ms = milliSecondsToTimer((songList.value!![position].duration)!!.toLong())
         holder.itemView.songName.text = songList.value!![position].title
         holder.itemView.songDur.text = ms
         holder.itemView.songArt.text = songList.value!![position].artist
+    }
+
+    private fun milliSecondsToTimer(milliseconds:Long):String {
+
+        val hours = (milliseconds / (1000 * 60 * 60)).toInt()
+        val minutes = ((milliseconds % (1000 * 60 * 60)) / (1000 * 60)).toInt()
+        val seconds = ((milliseconds % (1000 * 60 * 60)) % (1000 * 60) / 1000).toInt()
+
+        val sec = if (seconds > 10) {
+            "$seconds"
+        } else {
+            "0$seconds"
+        }
+        val min = if (minutes > 10) {
+            "$minutes"
+        } else {
+            "0$minutes"
+        }
+        val hour = if (hours > 10) {
+            "$hours"
+        } else {
+            "0$hours"
+        }
+
+        // return timer string
+        return if (hours > 0) {
+            "$hour : $min : $sec"
+        } else {
+            "$min : $sec"
+        }
     }
 }
