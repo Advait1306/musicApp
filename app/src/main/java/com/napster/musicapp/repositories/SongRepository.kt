@@ -1,6 +1,5 @@
 package com.napster.musicapp.repositories
 
-import android.app.Application
 import android.content.ContentUris
 import android.content.Context
 import android.net.Uri

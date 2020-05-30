@@ -2,21 +2,20 @@ package com.napster.musicapp
 
 import android.content.pm.PackageManager
 import android.graphics.Color
-import android.media.MediaPlayer
-import androidx.appcompat.app.AppCompatActivity
-import android.Manifest.permission.READ_EXTERNAL_STORAGE as re
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.view.WindowManager
 import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.napster.musicapp.adapters.SongRecyclerViewAdapter
 import com.napster.musicapp.fragments.PlayerFragment
 import com.napster.musicapp.viewModels.PlayerViewModel
-import kotlinx.android.synthetic.main.activity_main.*
 import com.napster.musicapp.viewModels.SongListViewModel
+import kotlinx.android.synthetic.main.activity_main.*
+import android.Manifest.permission.READ_EXTERNAL_STORAGE as re
 
 class MainActivity : AppCompatActivity() {
 
@@ -34,22 +33,23 @@ class MainActivity : AppCompatActivity() {
         fragmentTransaction.commit()
 
         //RecyclerView code
-        val recyclerViewAdapter = SongRecyclerViewAdapter(songListViewModel.getSongList(), playerViewModel)
-        val recyclerViewLayoutManager = LinearLayoutManager(this )
+        val recyclerViewAdapter =
+            SongRecyclerViewAdapter(songListViewModel.getSongList(), playerViewModel)
+        val recyclerViewLayoutManager = LinearLayoutManager(this)
 
-        songRecyclerView.apply{
+        songRecyclerView.apply {
             setHasFixedSize(true)
             layoutManager = recyclerViewLayoutManager
             adapter = recyclerViewAdapter
         }
+
         window.apply {
             clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
             addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
             decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
             statusBarColor = Color.TRANSPARENT
-
-
         }
+
         //Observing liveData for changes in the database of songs
         songListViewModel.getSongList().observe(this, Observer {
             recyclerViewAdapter.notifyDataSetChanged()

@@ -6,10 +6,10 @@ import android.view.ViewGroup
 import androidx.lifecycle.LiveData
 import androidx.recyclerview.widget.RecyclerView
 import com.napster.musicapp.R
+import com.napster.musicapp.converters.ToString
 import com.napster.musicapp.repositories.Song
 import com.napster.musicapp.viewModels.PlayerViewModel
 import kotlinx.android.synthetic.main.song_list_view.view.*
-import kotlin.properties.Delegates
 
 
 class SongRecyclerViewAdapter(private val songList: LiveData<ArrayList<Song>>, private val playerViewModel: PlayerViewModel) :
@@ -31,7 +31,7 @@ class SongRecyclerViewAdapter(private val songList: LiveData<ArrayList<Song>>, p
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val currentSong = songList.value!![position]
-        val ms = com.napster.musicapp.repositories.get().milliSecondsToTimer((currentSong.duration)!!.toLong())
+        val ms = ToString.milliSecondsToTimer((currentSong.duration)!!.toLong())
         holder.itemView.songName.text = songList.value!![position].title
         holder.itemView.songDur.text = ms
         holder.itemView.songArt.text = songList.value!![position].artist
