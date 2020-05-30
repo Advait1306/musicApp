@@ -22,6 +22,7 @@ class Song (
     @ColumnInfo(name = "songDuration")
     private var songDuration : Int // in seconds
     )
+
 {
 
     fun getId(): Int{

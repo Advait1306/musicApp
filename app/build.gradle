@@ -45,6 +45,8 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
 
+    //Circular
+
     //Fragment artifact
     implementation "androidx.fragment:fragment-ktx:1.2.4"
 

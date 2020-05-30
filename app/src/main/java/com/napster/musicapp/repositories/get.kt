@@ -1,26 +1,39 @@
 package com.napster.musicapp.repositories
 
-/*
-import android.view.View
-import android.widget.ListView
-import android.widget.TextView
-import com.napster.musicapp.R
-var textView : TextView = TODO()
-var textView1: TextView = TODO()
-var textView2: TextView = TODO()
-class get {
-    fun get() {
-        private var audioList: ArrayList<Any> = ArrayList()
-        External()
-        textView = findViewById<TextView>(com.napster.musicapp.R.id.textView12)
-        textView1 = findViewById<TextView>(com.napster.musicapp.R.id.albumchild_sub)
-        textView2 = findViewById<TextView>(com.napster.musicapp.R.id.albumchild_sub1)
-        val listView = findViewById<View>(R.id.list) as ListView
-        val arrayAdapter: CustomAdapter = CustomAdapter(this, audioList)
-        listView.adapter = arrayAdapter
+import androidx.lifecycle.LiveData
+import com.napster.musicapp.adapters.SongRecyclerViewAdapter
+import com.napster.musicapp.viewModels.PlayerViewModel
+import kotlinx.android.synthetic.main.song_list_view.view.*
+
+class get{
+    fun milliSecondsToTimer(milliseconds:Long):String {
+
+        val hours = (milliseconds / (1000 * 60 * 60)).toInt()
+        val minutes = ((milliseconds % (1000 * 60 * 60)) / (1000 * 60)).toInt()
+        val seconds = ((milliseconds % (1000 * 60 * 60)) % (1000 * 60) / 1000).toInt()
+
+        val sec = if (seconds > 10) {
+            "$seconds"
+        } else {
+            "0$seconds"
+        }
+        val min = if (minutes > 10) {
+            "$minutes"
+        } else {
+            "0$minutes"
+        }
+        val hour = if (hours > 10) {
+            "$hours"
+        } else {
+            "0$hours"
+        }
+
+        // return timer string
+        return if (hours > 0) {
+            "$hour : $min : $sec"
+        } else {
+            "$min : $sec"
+        }
     }
+
 }
-fun External() {
-    val load = Songdata()
-    audioList = load.getPlayList(this)!!
-}*/

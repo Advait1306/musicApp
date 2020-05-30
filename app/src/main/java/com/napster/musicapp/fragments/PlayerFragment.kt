@@ -1,5 +1,6 @@
 package com.napster.musicapp.fragments
 
+import android.graphics.drawable.Drawable
 import android.media.AudioManager
 import android.media.MediaPlayer
 import android.os.Bundle
@@ -9,10 +10,15 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 import com.napster.musicapp.R
+import com.napster.musicapp.adapters.SongRecyclerViewAdapter
 import com.napster.musicapp.viewModels.PlayerViewModel
+import com.napster.musicapp.repositories.*
+import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_player.*
+import kotlinx.android.synthetic.main.song_list_view.view.*
 
 class PlayerFragment : Fragment(){
 
@@ -62,8 +68,27 @@ class PlayerFragment : Fragment(){
                 mediaPlayer!!.release()
                 mediaPlayer = null
             }
-
             playerViewModel.setCurrentSong(null)
         }
+        //Play Pause button
+        var isPaused = false
+        pauseButton.setOnClickListener{
+            if (mediaPlayer!=null){
+                if  (isPaused) {
+                    mediaPlayer!!.start()
+                    isPaused=false
+                    pauseButton.setBackgroundResource(R.drawable.pause)
+                }
+                else{
+                    mediaPlayer!!.pause()
+                    isPaused=true
+                    pauseButton.setBackgroundResource(R.drawable.play)
+                }
+            }
+        }
+
+        /*mediaPlayer!!.setOnCompletionListener {
+           SongRecyclerViewAdapter().nextSong(position + 1)
+        }*/
     }
 }

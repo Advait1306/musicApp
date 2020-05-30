@@ -1,11 +1,14 @@
 package com.napster.musicapp
 
 import android.content.pm.PackageManager
+import android.graphics.Color
 import android.media.MediaPlayer
 import androidx.appcompat.app.AppCompatActivity
 import android.Manifest.permission.READ_EXTERNAL_STORAGE as re
 import android.os.Bundle
 import android.util.Log
+import android.view.View
+import android.view.WindowManager
 import androidx.activity.viewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -39,7 +42,14 @@ class MainActivity : AppCompatActivity() {
             layoutManager = recyclerViewLayoutManager
             adapter = recyclerViewAdapter
         }
+        window.apply {
+            clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
+            addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
+            decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+            statusBarColor = Color.TRANSPARENT
 
+
+        }
         //Observing liveData for changes in the database of songs
         songListViewModel.getSongList().observe(this, Observer {
             recyclerViewAdapter.notifyDataSetChanged()
